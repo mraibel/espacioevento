@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { EventosModule } from './eventos/eventos.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -9,11 +10,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     host: 'localhost',
     port: 5432,
     username: 'postgres',
-    password: '',
+    password: '12345678',
     database: 'espacioeventodb',
     autoLoadEntities: true,
     synchronize: true, //Solo para desarrollo
-  })],
+  }), EventosModule],
   controllers: [AppController],
   providers: [AppService],
 })
