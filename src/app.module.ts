@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EventosModule } from './eventos/eventos.module';
+import { UsuariosModule } from './usuarios/usuarios.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -10,12 +9,12 @@ import { EventosModule } from './eventos/eventos.module';
     host: 'localhost',
     port: 5432,
     username: 'postgres',
-    password: '12345678',
+    password: '',
     database: 'espacioeventodb',
     autoLoadEntities: true,
-    synchronize: true, //Solo para desarrollo
-  }), EventosModule],
-  controllers: [AppController],
-  providers: [AppService],
+    synchronize: true,
+  }), EventosModule, UsuariosModule],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
