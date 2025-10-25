@@ -10,12 +10,15 @@ export class EventosService {
   constructor(
     @InjectRepository(Evento)
     private readonly eventoRepository: Repository<Evento>,
-  ) {
-    
-  }
+  ) {}
 
   async findAll(): Promise<Evento[]> {
-    return await this.eventoRepository.find();
+    return await this.eventoRepository.find({
+      order: {
+        fecha: 'ASC',
+        hora: 'ASC'
+      }
+    });
   }
 
   async findOne(id: number): Promise<Evento> {
@@ -30,6 +33,22 @@ export class EventosService {
       inscritos: 0,
     });
     return await this.eventoRepository.save(nuevoEvento);
+  }
+
+  async update(id: number, dto: CrearEventoDto): Promise<Evento> {
+    const evento = await this.findOne(id);
+    
+    const eventoActualizado = this.eventoRepository.merge(evento, {
+      ...dto,
+      inscritos: evento.inscritos // Mantenemos el número de inscritos
+    });
+    
+    return await this.eventoRepository.save(eventoActualizado);
+  }
+
+  async remove(id: number): Promise<void> {
+    const evento = await this.findOne(id);
+    await this.eventoRepository.remove(evento);
   }
 
   async inscribir(id: number): Promise<Evento> {
