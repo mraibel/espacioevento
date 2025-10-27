@@ -61,4 +61,15 @@ export class EventosService {
     evento.inscritos++;
     return await this.eventoRepository.save(evento);
   }
+
+  async updatePartial(id: number, dto: Partial<CrearEventoDto>): Promise<Evento> {
+    const evento = await this.findOne(id);
+    // Si se intenta modificar los cupos, verificamos que no sea menor a los inscritos
+    if (dto.cupos !== undefined && dto.cupos < evento.inscritos) {
+      throw new BadRequestException('No se pueden reducir los cupos por debajo del número de inscritos');
+    }
+    const eventoActualizado = this.eventoRepository.merge(evento, dto);
+    return await this.eventoRepository.save(eventoActualizado);
+  }
+
 }
