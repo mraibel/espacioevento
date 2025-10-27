@@ -35,10 +35,4 @@ export class EventosController {
   remove(@Param('id') id: string) {
     return this.eventosService.remove(+id);
   }
-
-  @Post(':id/inscribir')
-  @HttpCode(HttpStatus.OK)
-  inscribir(@Param('id') id: string) {
-    return this.eventosService.inscribir(+id);
-  }
 }

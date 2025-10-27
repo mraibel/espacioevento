@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EventosModule } from './eventos/eventos.module';
 import { SeedModule } from './seed/seed.module';
+import { UsuariosModule } from './usuarios/usuarios.module';
+import { SalasModule } from './salas/salas.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -15,7 +17,7 @@ import { SeedModule } from './seed/seed.module';
     database: 'espacioeventodb',
     autoLoadEntities: true,
     synchronize: true, //Solo para desarrollo
-  }), EventosModule, SeedModule],
+  }), EventosModule, SeedModule, UsuariosModule, SalasModule],
   controllers: [AppController],
   providers: [AppService],
 })
