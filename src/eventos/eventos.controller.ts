@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, HttpStatus, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Put, Patch, Delete, Param, Body, HttpStatus, HttpCode } from '@nestjs/common';
 import { EventosService } from './eventos.service';
 import { CrearEventoDto } from './dto/crear-evento.dto';
 
@@ -35,4 +35,11 @@ export class EventosController {
   remove(@Param('id') id: string) {
     return this.eventosService.remove(+id);
   }
+
+  @Patch(':id')
+  @HttpCode(HttpStatus.OK)
+  updatePartial(@Param('id') id: string, @Body() dto: Partial<CrearEventoDto>) {
+    return this.eventosService.updatePartial(+id, dto);
+  }
+
 }
