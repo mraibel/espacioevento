@@ -6,18 +6,20 @@ import { EventosModule } from './eventos/eventos.module';
 import { SeedModule } from './seed/seed.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { SalasModule } from './salas/salas.module';
+import { InscripcionesModule } from './inscripciones/inscripciones.module';
+import { PagosModule } from './pagos/pagos.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
     type: 'postgres',
     host: 'localhost',
-    port: 5433,
+    port: 5432,
     username: 'postgres',
-    password: '1234',
+    password: '',
     database: 'espacioeventodb',
     autoLoadEntities: true,
     synchronize: true, //Solo para desarrollo
-  }), EventosModule, SeedModule, UsuariosModule, SalasModule],
+  }), EventosModule, SeedModule, UsuariosModule, SalasModule, InscripcionesModule, PagosModule],
   controllers: [AppController],
   providers: [AppService],
 })

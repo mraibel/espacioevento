@@ -36,10 +36,4 @@ export class EventosController {
     return this.eventosService.remove(+id);
   }
 
-  @Patch(':id')
-  @HttpCode(HttpStatus.OK)
-  updatePartial(@Param('id') id: string, @Body() dto: Partial<CrearEventoDto>) {
-    return this.eventosService.updatePartial(+id, dto);
-  }
-
 }

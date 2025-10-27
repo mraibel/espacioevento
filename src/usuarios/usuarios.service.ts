@@ -9,6 +9,7 @@ import * as bcrypt from 'bcrypt';
 import { ConflictException } from '@nestjs/common';
 import { UnauthorizedException } from '@nestjs/common';
 import { LoginUsuarioDto } from './dto/login-usuario.dto';
+import { RolUsuario } from './entities/usuario.entity';
 
 @Injectable()
 export class UsuariosService {
@@ -23,11 +24,17 @@ export class UsuariosService {
     if (exist) {
       throw new ConflictException('El correo ya está registrado');
     }
+    
     const hashedPassword = await bcrypt.hash(createUsuarioDto.contraseña, 10);
+
     const usuario = this.usuarioRepository.create({
-      ...createUsuarioDto,
+      nombre: createUsuarioDto.nombre,
+      apellido: createUsuarioDto.apellido,
+      correo: createUsuarioDto.correo,
       contraseña: hashedPassword,
+      rol: createUsuarioDto.rol,
     });
+
     return await this.usuarioRepository.save(usuario);
   }
 

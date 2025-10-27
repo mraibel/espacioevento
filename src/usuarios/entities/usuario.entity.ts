@@ -1,26 +1,32 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+export enum RolUsuario {
+  ADMINISTRADOR = 'administrador',
+  ORGANIZADOR = 'organizador',
+  ASISTENTE = 'asistente',
+}
+
+@Entity('usuarios')
 export class Usuario {
-    @PrimaryGeneratedColumn()
-    id_usuario: number;
+  @PrimaryGeneratedColumn()
+  id_usuario: number;
 
-    @Column()
-    nombre: string;
+  @Column({ type: 'varchar', length: 100 })
+  nombre: string;
 
-    @Column()
-    apellido: string;
+  @Column({ type: 'varchar', length: 100 })
+  apellido: string;
 
-    @Column({ unique: true })
-    correo: string;
+  @Column({ type: 'varchar', length: 255, unique: true })
+  correo: string;
 
-    @Column()
-    contraseña: string;
+  @Column({ type: 'varchar', length: 255 })
+  contraseña: string;
 
-    @Column({ default: 'asistente' })
-    rol: 'administrador' | 'organizador' | 'asistente';
+  @Column({ type: 'enum', enum: RolUsuario })
+  rol: RolUsuario;
 
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-    fecha_registro: Date;
+  @Column({ type: 'date' })
+  fecha_registro: string;
 }
 
