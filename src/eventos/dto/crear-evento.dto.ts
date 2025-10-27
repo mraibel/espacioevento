@@ -1,20 +1,41 @@
-import { IsString, IsDateString, IsNumber, Min, Length, Matches } from 'class-validator';
+import { IsString, IsDateString, IsNumber, Min, Length, IsEnum, IsOptional } from 'class-validator';
+import { TipoEvento, EstadoEvento } from '../entities/evento.entity';
 
 export class CrearEventoDto {
+  @IsNumber()
+  id_organizador: number;
+
+  @IsNumber()
+  id_sala: number;
+
   @IsString()
-  @Length(3, 255, { message: 'El nombre debe tener entre 3 y 255 caracteres' })
-  nombre: string;
+  @Length(3, 255)
+  nombre_evento: string;
+
+  @IsOptional()
+  @IsString()
+  descripcion?: string;
 
   @IsDateString()
   fecha: string;
 
   @IsString()
-  @Matches(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, {
-    message: 'La hora debe estar en formato HH:MM (24h)',
-  })
-  hora: string;
+  hora_inicio: string;
+
+  @IsString()
+  hora_fin: string;
+  
+  @IsNumber()
+  @Min(1)
+  cupos_totales: number;
 
   @IsNumber()
-  @Min(1, { message: 'Los cupos deben ser al menos 1' })
-  cupos: number;
+  precio_entrada: number;
+
+  @IsEnum(TipoEvento)
+  tipo_evento: TipoEvento;
+
+  @IsOptional()
+  @IsEnum(EstadoEvento)
+  estado?: EstadoEvento;
 }
