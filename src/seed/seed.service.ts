@@ -7,6 +7,7 @@ import { RolUsuario } from 'src/usuarios/entities/usuario.entity';
 import { EstadoPago, MetodoPago, TipoPago } from 'src/pagos/entities/pago.entity';
 import { PagosService } from 'src/pagos/pagos.service';
 import { InscripcionesService } from 'src/inscripciones/inscripciones.service';
+import { EstadoPago as EstadoPagoInscripcion } from 'src/inscripciones/dto/create-inscripcione.dto';
 
 @Injectable()
 export class SeedService {
@@ -216,34 +217,12 @@ export class SeedService {
       eventosCreados.push(eventoCreado);
     }
 
-    // Pago de entrada a evento (Concierto de Rock - evento 1)
-    const pago1 = await this.pagosService.create({
-      id_usuario: asistente1.id_usuario,
-      id_evento: 1, // Primer evento creado
-      monto: 25000,
-      tipo_pago: TipoPago.ENTRADA,
-      metodo: MetodoPago.TARJETA,
-      fecha_pago: '2025-10-27',
-      estado: EstadoPago.CONFIRMADO
-    });
-
-    // Pago de arriendo de sala (Sala Principal)
-    const pago2 = await this.pagosService.create({
-      id_usuario: usuario1.id_usuario,
-      id_sala: sala1.id_sala,
-      monto: 2000,
-      tipo_pago: TipoPago.ARRIENDO,
-      metodo: MetodoPago.TRANSFERENCIA,
-      fecha_pago: '2025-10-27',
-      estado: EstadoPago.CONFIRMADO
-    });
-
     // Crear inscripciones
     const inscripcion1 = await this.inscripcionesService.create({
       id_usuario: asistente1.id_usuario,
       id_evento: eventosCreados[0].id_evento, // Concierto de Rock
       fecha_inscripcion: '2025-02-10',
-      estado_pago: EstadoPago.PAGADO,
+      estado_pago: EstadoPagoInscripcion.PAGADO,
       asistencia: false
     });
 
@@ -251,7 +230,7 @@ export class SeedService {
       id_usuario: asistente1.id_usuario,
       id_evento: eventosCreados[3].id_evento, // Conferencia de Tecnología
       fecha_inscripcion: '2025-02-15',
-      estado_pago: EstadoPago.PAGADO,
+      estado_pago: EstadoPagoInscripcion.PAGADO,
       asistencia: false
     });
 
@@ -259,7 +238,7 @@ export class SeedService {
       id_usuario: asistente2.id_usuario,
       id_evento: eventosCreados[0].id_evento, // Concierto de Rock
       fecha_inscripcion: '2025-02-12',
-      estado_pago: EstadoPago.PAGADO,
+      estado_pago: EstadoPagoInscripcion.PAGADO,
       asistencia: false
     });
 
@@ -267,7 +246,7 @@ export class SeedService {
       id_usuario: asistente2.id_usuario,
       id_evento: eventosCreados[2].id_evento, // Festival de Música Electrónica
       fecha_inscripcion: '2025-03-01',
-      estado_pago: EstadoPago.PENDIENTE,
+      estado_pago: EstadoPagoInscripcion.PENDIENTE,
       asistencia: false
     });
 
@@ -275,7 +254,7 @@ export class SeedService {
       id_usuario: asistente3.id_usuario,
       id_evento: eventosCreados[5].id_evento, // Stand Up Comedy Night
       fecha_inscripcion: '2025-03-10',
-      estado_pago: EstadoPago.PAGADO,
+      estado_pago: EstadoPagoInscripcion.PAGADO,
       asistencia: false
     });
 
@@ -283,7 +262,7 @@ export class SeedService {
       id_usuario: asistente3.id_usuario,
       id_evento: eventosCreados[6].id_evento, // Taller de Fotografía
       fecha_inscripcion: '2025-03-20',
-      estado_pago: EstadoPago.PENDIENTE,
+      estado_pago: EstadoPagoInscripcion.PENDIENTE,
       asistencia: false
     });
 
@@ -291,56 +270,61 @@ export class SeedService {
     const pago1 = await this.pagosService.create({
       id_usuario: asistente1.id_usuario,
       id_evento: eventosCreados[0].id_evento,
-      id_sala: null,
       monto: eventosCreados[0].precio_entrada,
-      tipo_pago: 'entrada',
-      metodo: 'tarjeta',
+      tipo_pago: TipoPago.ENTRADA,
+      metodo: MetodoPago.TARJETA,
       fecha_pago: '2025-02-10',
-      estado: 'confirmado'
+      estado: EstadoPago.CONFIRMADO
     });
 
     const pago2 = await this.pagosService.create({
       id_usuario: asistente1.id_usuario,
       id_evento: eventosCreados[3].id_evento,
-      id_sala: null,
       monto: eventosCreados[3].precio_entrada,
-      tipo_pago: 'entrada',
-      metodo: 'transferencia',
+      tipo_pago: TipoPago.ENTRADA,
+      metodo: MetodoPago.TRANSFERENCIA,
       fecha_pago: '2025-02-15',
-      estado: 'confirmado'
+      estado: EstadoPago.CONFIRMADO
     });
 
     const pago3 = await this.pagosService.create({
       id_usuario: asistente2.id_usuario,
       id_evento: eventosCreados[0].id_evento,
-      id_sala: null,
       monto: eventosCreados[0].precio_entrada,
-      tipo_pago: 'entrada',
-      metodo: 'efectivo',
+      tipo_pago: TipoPago.ENTRADA,
+      metodo: MetodoPago.EFECTIVO,
       fecha_pago: '2025-02-12',
-      estado: 'confirmado'
+      estado: EstadoPago.CONFIRMADO
     });
 
     const pago4 = await this.pagosService.create({
       id_usuario: asistente2.id_usuario,
       id_evento: eventosCreados[2].id_evento,
-      id_sala: null,
       monto: eventosCreados[2].precio_entrada,
-      tipo_pago: 'entrada',
-      metodo: 'tarjeta',
+      tipo_pago: TipoPago.ENTRADA,
+      metodo: MetodoPago.TARJETA,
       fecha_pago: '2025-03-01',
-      estado: 'pendiente'
+      estado: EstadoPago.PENDIENTE
     });
 
     const pago5 = await this.pagosService.create({
       id_usuario: asistente3.id_usuario,
       id_evento: eventosCreados[5].id_evento,
-      id_sala: null,
       monto: eventosCreados[5].precio_entrada,
-      tipo_pago: 'entrada',
-      metodo: 'tarjeta',
+      tipo_pago: TipoPago.ENTRADA,
+      metodo: MetodoPago.TARJETA,
       fecha_pago: '2025-03-10',
-      estado: 'confirmado'
+      estado: EstadoPago.CONFIRMADO
+    });
+
+    const pago6 = await this.pagosService.create({
+      id_usuario: usuario1.id_usuario,
+      id_sala: sala1.id_sala,
+      monto: sala1.precio_arriendo,
+      tipo_pago: TipoPago.ARRIENDO,
+      metodo: MetodoPago.TRANSFERENCIA,
+      fecha_pago: '2025-02-27',
+      estado: EstadoPago.CONFIRMADO
     });
 
     return {
@@ -352,7 +336,7 @@ export class SeedService {
       salas: [sala1, sala2, sala3, sala4, sala5],
       eventos: eventosCreados.length,
       inscripciones: 6,
-      pagos: 5
+      pagos: 6
     }
   }
 }

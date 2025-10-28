@@ -26,7 +26,7 @@ export class Usuario {
   @Column({ type: 'enum', enum: RolUsuario })
   rol: RolUsuario;
 
-  @Column({ type: 'date' })
+  @Column({ type: 'date' , default: () => 'CURRENT_DATE' })
   fecha_registro: string;
 }
 
