@@ -34,5 +34,5 @@ npm run start:dev
 
 6. Cargar datos iniciales:
 ```
-GET http://localhost:3000/seed
+GET http://localhost:3000/api/seed
 ```
