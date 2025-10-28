@@ -13,9 +13,9 @@ import { PagosModule } from './pagos/pagos.module';
   imports: [TypeOrmModule.forRoot({
     type: 'postgres',
     host: 'localhost',
-    port: 5432,
+    port: 5433,
     username: 'postgres',
-    password: '',
+    password: '1234',
     database: 'espacioeventodb',
     autoLoadEntities: true,
     synchronize: true, //Solo para desarrollo
