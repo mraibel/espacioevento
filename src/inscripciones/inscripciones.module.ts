@@ -8,5 +8,6 @@ import { Inscripcione } from './entities/inscripcione.entity';
   imports: [TypeOrmModule.forFeature([Inscripcione])],
   controllers: [InscripcionesController],
   providers: [InscripcionesService],
+  exports: [InscripcionesService],
 })
 export class InscripcionesModule { }
