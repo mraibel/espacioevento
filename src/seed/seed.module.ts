@@ -4,9 +4,10 @@ import { SeedController } from './seed.controller';
 import { EventosModule } from '../eventos/eventos.module'; 
 import { SalasModule } from 'src/salas/salas.module';
 import { UsuariosModule } from 'src/usuarios/usuarios.module';
+import { PagosModule } from 'src/pagos/pagos.module';
 
 @Module({
-  imports: [EventosModule, SalasModule, UsuariosModule],
+  imports: [EventosModule, SalasModule, UsuariosModule, PagosModule],
   controllers: [SeedController],
   providers: [SeedService],
 })

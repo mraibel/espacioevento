@@ -4,9 +4,9 @@ import { TipoEvento, EstadoEvento, Evento } from '../eventos/entities/evento.ent
 import { UsuariosService } from '../usuarios/usuarios.service';
 import { SalasService } from '../salas/salas.service';
 import { RolUsuario } from 'src/usuarios/entities/usuario.entity';
-import { InscripcionesService } from 'src/inscripciones/inscripciones.service';
+import { EstadoPago, MetodoPago, TipoPago } from 'src/pagos/entities/pago.entity';
 import { PagosService } from 'src/pagos/pagos.service';
-import { EstadoPago } from 'src/inscripciones/dto/create-inscripcione.dto';
+import { InscripcionesService } from 'src/inscripciones/inscripciones.service';
 
 @Injectable()
 export class SeedService {
@@ -215,6 +215,28 @@ export class SeedService {
       const eventoCreado = await this.eventosService.create(evento);
       eventosCreados.push(eventoCreado);
     }
+
+    // Pago de entrada a evento (Concierto de Rock - evento 1)
+    const pago1 = await this.pagosService.create({
+      id_usuario: asistente1.id_usuario,
+      id_evento: 1, // Primer evento creado
+      monto: 25000,
+      tipo_pago: TipoPago.ENTRADA,
+      metodo: MetodoPago.TARJETA,
+      fecha_pago: '2025-10-27',
+      estado: EstadoPago.CONFIRMADO
+    });
+
+    // Pago de arriendo de sala (Sala Principal)
+    const pago2 = await this.pagosService.create({
+      id_usuario: usuario1.id_usuario,
+      id_sala: sala1.id_sala,
+      monto: 2000,
+      tipo_pago: TipoPago.ARRIENDO,
+      metodo: MetodoPago.TRANSFERENCIA,
+      fecha_pago: '2025-10-27',
+      estado: EstadoPago.CONFIRMADO
+    });
 
     // Crear inscripciones
     const inscripcion1 = await this.inscripcionesService.create({
