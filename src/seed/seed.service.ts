@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { EventosService } from '../eventos/eventos.service';
-import { TipoEvento, EstadoEvento } from '../eventos/entities/evento.entity';
+import { TipoEvento, EstadoEvento, Evento } from '../eventos/entities/evento.entity';
 import { UsuariosService } from '../usuarios/usuarios.service';
 import { SalasService } from '../salas/salas.service';
 import { RolUsuario } from 'src/usuarios/entities/usuario.entity';
 import { EstadoPago, MetodoPago, TipoPago } from 'src/pagos/entities/pago.entity';
 import { PagosService } from 'src/pagos/pagos.service';
+import { InscripcionesService } from 'src/inscripciones/inscripciones.service';
 
 @Injectable()
 export class SeedService {
@@ -13,7 +14,8 @@ export class SeedService {
     private readonly eventosService: EventosService,
     private readonly usuariosService: UsuariosService,
     private readonly salasService: SalasService,
-    private readonly pagosService: PagosService
+    private readonly inscripcionesService: InscripcionesService,
+    private readonly pagosService: PagosService,
   ) {}
 
   async executeSeed() {
@@ -208,30 +210,137 @@ export class SeedService {
       }
     ];
 
+    const eventosCreados: Evento[] = [];
     for (const evento of eventos) {
-      await this.eventosService.create(evento);
+      const eventoCreado = await this.eventosService.create(evento);
+      eventosCreados.push(eventoCreado);
     }
 
     // Pago de entrada a evento (Concierto de Rock - evento 1)
     const pago1 = await this.pagosService.create({
-    id_usuario: asistente1.id_usuario,
-    id_evento: 1, // Primer evento creado
-    monto: 25000,
-    tipo_pago: TipoPago.ENTRADA,
-    metodo: MetodoPago.TARJETA,
-    fecha_pago: '2025-10-27',
-    estado: EstadoPago.CONFIRMADO
+      id_usuario: asistente1.id_usuario,
+      id_evento: 1, // Primer evento creado
+      monto: 25000,
+      tipo_pago: TipoPago.ENTRADA,
+      metodo: MetodoPago.TARJETA,
+      fecha_pago: '2025-10-27',
+      estado: EstadoPago.CONFIRMADO
     });
 
     // Pago de arriendo de sala (Sala Principal)
     const pago2 = await this.pagosService.create({
-    id_usuario: usuario1.id_usuario,
-    id_sala: sala1.id_sala,
-    monto: 2000,
-    tipo_pago: TipoPago.ARRIENDO,
-    metodo: MetodoPago.TRANSFERENCIA,
-    fecha_pago: '2025-10-27',
-    estado: EstadoPago.CONFIRMADO
+      id_usuario: usuario1.id_usuario,
+      id_sala: sala1.id_sala,
+      monto: 2000,
+      tipo_pago: TipoPago.ARRIENDO,
+      metodo: MetodoPago.TRANSFERENCIA,
+      fecha_pago: '2025-10-27',
+      estado: EstadoPago.CONFIRMADO
+    });
+
+    // Crear inscripciones
+    const inscripcion1 = await this.inscripcionesService.create({
+      id_usuario: asistente1.id_usuario,
+      id_evento: eventosCreados[0].id_evento, // Concierto de Rock
+      fecha_inscripcion: '2025-02-10',
+      estado_pago: EstadoPago.PAGADO,
+      asistencia: false
+    });
+
+    const inscripcion2 = await this.inscripcionesService.create({
+      id_usuario: asistente1.id_usuario,
+      id_evento: eventosCreados[3].id_evento, // Conferencia de Tecnología
+      fecha_inscripcion: '2025-02-15',
+      estado_pago: EstadoPago.PAGADO,
+      asistencia: false
+    });
+
+    const inscripcion3 = await this.inscripcionesService.create({
+      id_usuario: asistente2.id_usuario,
+      id_evento: eventosCreados[0].id_evento, // Concierto de Rock
+      fecha_inscripcion: '2025-02-12',
+      estado_pago: EstadoPago.PAGADO,
+      asistencia: false
+    });
+
+    const inscripcion4 = await this.inscripcionesService.create({
+      id_usuario: asistente2.id_usuario,
+      id_evento: eventosCreados[2].id_evento, // Festival de Música Electrónica
+      fecha_inscripcion: '2025-03-01',
+      estado_pago: EstadoPago.PENDIENTE,
+      asistencia: false
+    });
+
+    const inscripcion5 = await this.inscripcionesService.create({
+      id_usuario: asistente3.id_usuario,
+      id_evento: eventosCreados[5].id_evento, // Stand Up Comedy Night
+      fecha_inscripcion: '2025-03-10',
+      estado_pago: EstadoPago.PAGADO,
+      asistencia: false
+    });
+
+    const inscripcion6 = await this.inscripcionesService.create({
+      id_usuario: asistente3.id_usuario,
+      id_evento: eventosCreados[6].id_evento, // Taller de Fotografía
+      fecha_inscripcion: '2025-03-20',
+      estado_pago: EstadoPago.PENDIENTE,
+      asistencia: false
+    });
+
+    // Crear pagos
+    const pago1 = await this.pagosService.create({
+      id_usuario: asistente1.id_usuario,
+      id_evento: eventosCreados[0].id_evento,
+      id_sala: null,
+      monto: eventosCreados[0].precio_entrada,
+      tipo_pago: 'entrada',
+      metodo: 'tarjeta',
+      fecha_pago: '2025-02-10',
+      estado: 'confirmado'
+    });
+
+    const pago2 = await this.pagosService.create({
+      id_usuario: asistente1.id_usuario,
+      id_evento: eventosCreados[3].id_evento,
+      id_sala: null,
+      monto: eventosCreados[3].precio_entrada,
+      tipo_pago: 'entrada',
+      metodo: 'transferencia',
+      fecha_pago: '2025-02-15',
+      estado: 'confirmado'
+    });
+
+    const pago3 = await this.pagosService.create({
+      id_usuario: asistente2.id_usuario,
+      id_evento: eventosCreados[0].id_evento,
+      id_sala: null,
+      monto: eventosCreados[0].precio_entrada,
+      tipo_pago: 'entrada',
+      metodo: 'efectivo',
+      fecha_pago: '2025-02-12',
+      estado: 'confirmado'
+    });
+
+    const pago4 = await this.pagosService.create({
+      id_usuario: asistente2.id_usuario,
+      id_evento: eventosCreados[2].id_evento,
+      id_sala: null,
+      monto: eventosCreados[2].precio_entrada,
+      tipo_pago: 'entrada',
+      metodo: 'tarjeta',
+      fecha_pago: '2025-03-01',
+      estado: 'pendiente'
+    });
+
+    const pago5 = await this.pagosService.create({
+      id_usuario: asistente3.id_usuario,
+      id_evento: eventosCreados[5].id_evento,
+      id_sala: null,
+      monto: eventosCreados[5].precio_entrada,
+      tipo_pago: 'entrada',
+      metodo: 'tarjeta',
+      fecha_pago: '2025-03-10',
+      estado: 'confirmado'
     });
 
     return {
@@ -241,7 +350,9 @@ export class SeedService {
         asistentes: [asistente1, asistente2, asistente3]
       },
       salas: [sala1, sala2, sala3, sala4, sala5],
-      eventos: eventos.length,
+      eventos: eventosCreados.length,
+      inscripciones: 6,
+      pagos: 5
     }
   }
 }
