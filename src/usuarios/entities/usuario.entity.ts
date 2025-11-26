@@ -23,7 +23,7 @@ export class Usuario {
   @Column({ type: 'text', select: false })
   password: string;
 
-  @Column({ type: 'text', array: true, default: ['user'] })
+  @Column({ type: 'text', array: true, default: ['asistente'] })
   roles: string[];
 
   @Column({ type: 'date', default: () => 'CURRENT_DATE' })
