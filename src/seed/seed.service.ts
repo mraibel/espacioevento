@@ -26,7 +26,7 @@ export class SeedService {
       apellido: 'Pérez',
       correo: 'juan@example.com',
       password: '123456',
-      roles: [RolUsuario.ORGANIZADOR]
+      roles: [RolUsuario.ADMINISTRADOR]
     });
     const usuario2 = await this.usuariosService.create({
       nombre: 'Ana',
