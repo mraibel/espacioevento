@@ -17,7 +17,7 @@ export class SeedService {
     private readonly salasService: SalasService,
     private readonly inscripcionesService: InscripcionesService,
     private readonly pagosService: PagosService,
-  ) {}
+  ) { }
 
   async executeSeed() {
     // Crear usuarios organizadores
@@ -25,22 +25,22 @@ export class SeedService {
       nombre: 'Juan',
       apellido: 'Pérez',
       correo: 'juan@example.com',
-      contraseña: '123456',
-      rol: RolUsuario.ORGANIZADOR
+      password: '123456',
+      roles: [RolUsuario.ORGANIZADOR]
     });
     const usuario2 = await this.usuariosService.create({
       nombre: 'Ana',
       apellido: 'García',
       correo: 'ana@example.com',
-      contraseña: '123456',
-      rol: RolUsuario.ORGANIZADOR
+      password: '123456',
+      roles: [RolUsuario.ORGANIZADOR]
     });
     const usuario3 = await this.usuariosService.create({
       nombre: 'Carlos',
       apellido: 'López',
       correo: 'carlos@example.com',
-      contraseña: '123456',
-      rol: RolUsuario.ORGANIZADOR
+      password: '123456',
+      roles: [RolUsuario.ORGANIZADOR]
     });
 
     // Crear usuarios asistentes
@@ -48,22 +48,22 @@ export class SeedService {
       nombre: 'María',
       apellido: 'Rodríguez',
       correo: 'maria@example.com',
-      contraseña: '123456',
-      rol: RolUsuario.ASISTENTE
+      password: '123456',
+      roles: [RolUsuario.ASISTENTE]
     });
     const asistente2 = await this.usuariosService.create({
       nombre: 'Pedro',
       apellido: 'Martínez',
       correo: 'pedro@example.com',
-      contraseña: '123456',
-      rol: RolUsuario.ASISTENTE
+      password: '123456',
+      roles: [RolUsuario.ASISTENTE]
     });
     const asistente3 = await this.usuariosService.create({
       nombre: 'Laura',
       apellido: 'Sánchez',
       correo: 'laura@example.com',
-      contraseña: '123456',
-      rol: RolUsuario.ASISTENTE
+      password: '123456',
+      roles: [RolUsuario.ASISTENTE]
     });
 
     // Crear salas

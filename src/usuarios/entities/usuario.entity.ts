@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate } from 'typeorm';
 
 export enum RolUsuario {
   ADMINISTRADOR = 'administrador',
@@ -20,13 +20,23 @@ export class Usuario {
   @Column({ type: 'varchar', length: 255, unique: true })
   correo: string;
 
-  @Column({ type: 'varchar', length: 255 })
-  contraseña: string;
+  @Column({ type: 'text', select: false })
+  password: string;
 
-  @Column({ type: 'enum', enum: RolUsuario })
-  rol: RolUsuario;
+  @Column({ type: 'text', array: true, default: ['user'] })
+  roles: string[];
 
-  @Column({ type: 'date' , default: () => 'CURRENT_DATE' })
+  @Column({ type: 'date', default: () => 'CURRENT_DATE' })
   fecha_registro: string;
+
+  @BeforeInsert()
+  checkFieldsBeforeInsert() {
+    this.correo = this.correo.toLowerCase().trim();
+  }
+
+  @BeforeUpdate()
+  checkFieldsBeforeUpdate() {
+    this.checkFieldsBeforeInsert();
+  }
 }
 

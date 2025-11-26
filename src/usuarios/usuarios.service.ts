@@ -17,22 +17,22 @@ export class UsuariosService {
   constructor(
     @InjectRepository(Usuario)
     private readonly usuarioRepository: Repository<Usuario>,
-  ) {}
+  ) { }
 
   async create(createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
     const exist = await this.usuarioRepository.findOne({ where: { correo: createUsuarioDto.correo } });
     if (exist) {
       throw new ConflictException('El correo ya está registrado');
     }
-    
-    const hashedPassword = await bcrypt.hash(createUsuarioDto.contraseña, 10);
+
+    const hashedPassword = await bcrypt.hash(createUsuarioDto.password, 10);
 
     const usuario = this.usuarioRepository.create({
       nombre: createUsuarioDto.nombre,
       apellido: createUsuarioDto.apellido,
       correo: createUsuarioDto.correo,
-      contraseña: hashedPassword,
-      rol: createUsuarioDto.rol,
+      password: hashedPassword,
+      roles: createUsuarioDto.roles || ['user'],
     });
 
     return await this.usuarioRepository.save(usuario);
@@ -55,11 +55,14 @@ export class UsuariosService {
   }
 
   async login(loginDto: LoginUsuarioDto): Promise<Usuario> {
-    const usuario = await this.usuarioRepository.findOne({ where: { correo: loginDto.correo } });
+    const usuario = await this.usuarioRepository.findOne({
+      where: { correo: loginDto.correo },
+      select: { password: true, correo: true, id_usuario: true, roles: true, nombre: true, apellido: true }
+    });
     if (!usuario) {
       throw new UnauthorizedException('Correo o contraseña incorrectos');
     }
-    const isMatch = await bcrypt.compare(loginDto.contraseña, usuario.contraseña);
+    const isMatch = await bcrypt.compare(loginDto.password, usuario.password);
     if (!isMatch) {
       throw new UnauthorizedException('Correo o contraseña incorrectos');
     }
