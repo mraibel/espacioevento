@@ -32,6 +32,7 @@ services:
       - DB_USERNAME=postgres
       - DB_PASSWORD=1234
       - DB_NAME=espacioeventodb
+      - JWT_SECRET=e2056da2d99d51e72aa4be6193533a13
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
