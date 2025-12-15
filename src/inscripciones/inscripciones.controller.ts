@@ -11,7 +11,10 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { InscripcionesService } from './inscripciones.service';
-import { CreateInscripcioneDto } from './dto/create-inscripcione.dto';
+import {
+  CreateInscripcioneDto,
+  EstadoPago,
+} from './dto/create-inscripcione.dto';
 import { UpdateInscripcioneDto } from './dto/update-inscripcione.dto';
 import { Auth } from '../auth/decorators';
 import { ValidRoles } from '../auth/interfaces';
@@ -67,6 +70,18 @@ export class InscripcionesController {
   @Auth()
   partialUpdate(@Param('id') id: string, @Body() dto: UpdateInscripcioneDto) {
     return this.inscripcionesService.update(+id, dto);
+  }
+
+  @Patch(':id/pago')
+  @HttpCode(HttpStatus.OK)
+  @Auth()
+  updateEstadoPago(
+    @Param('id') id: string,
+    @Body() body: { estado_pago: 'pendiente' | 'pagado' },
+  ) {
+    const estadoPago =
+      body.estado_pago === 'pagado' ? EstadoPago.PAGADO : EstadoPago.PENDIENTE;
+    return this.inscripcionesService.update(+id, { estado_pago: estadoPago });
   }
 
   @Delete(':id')

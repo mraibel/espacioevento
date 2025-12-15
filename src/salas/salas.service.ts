@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { CreateSalaDto } from './dto/create-sala.dto';
 import { UpdateSalaDto } from './dto/update-sala.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,11 +7,10 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class SalasService {
-
   constructor(
     @InjectRepository(Sala)
-    private readonly salasRepository: Repository<Sala>
-  ){}
+    private readonly salasRepository: Repository<Sala>,
+  ) {}
 
   create(createSalaDto: CreateSalaDto) {
     const sala = this.salasRepository.create(createSalaDto);
@@ -30,7 +29,21 @@ export class SalasService {
     return this.salasRepository.update({ id_sala: id }, updateSalaDto);
   }
 
-  remove(id: number) {
-    return this.salasRepository.delete({ id_sala: id });
+  async remove(id: number) {
+    try {
+      const result = await this.salasRepository.delete({ id_sala: id });
+      if (result.affected === 0) {
+        throw new BadRequestException('Sala no encontrada');
+      }
+      return result;
+    } catch (error) {
+      if (error.code === '23503') {
+        // Foreign key violation
+        throw new BadRequestException(
+          'No se puede eliminar la sala porque está siendo usada por eventos',
+        );
+      }
+      throw error;
+    }
   }
 }
