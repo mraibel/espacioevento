@@ -16,5 +16,5 @@ RUN npm ci --only=production
 COPY --from=builder /app/dist ./dist
 
 USER node
-EXPOSE 3000
+EXPOSE 4000
 CMD ["node", "dist/main"]
