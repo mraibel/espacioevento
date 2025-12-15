@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { PagosService } from './pagos.service';
 import { CreatePagoDto } from './dto/create-pago.dto';
 import { UpdatePagoDto } from './dto/update-pago.dto';
@@ -7,7 +18,7 @@ import { ValidRoles } from '../auth/interfaces';
 
 @Controller('pagos')
 export class PagosController {
-  constructor(private readonly pagosService: PagosService) { }
+  constructor(private readonly pagosService: PagosService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -46,9 +57,25 @@ export class PagosController {
     return this.pagosService.findOne(id);
   }
 
+  @Post('mercadopago/create-preference')
+  @HttpCode(HttpStatus.OK)
+  @Auth()
+  createMercadoPagoPreference(@Body() body: { id_inscripcion: number }) {
+    return this.pagosService.createMercadoPagoPreference(body.id_inscripcion);
+  }
+
+  @Post('mercadopago/webhook')
+  @HttpCode(HttpStatus.OK)
+  mercadoPagoWebhook(@Body() body: any) {
+    return this.pagosService.handleMercadoPagoWebhook(body);
+  }
+
   @Patch(':id')
   @Auth(ValidRoles.admin)
-  update(@Param('id', ParseIntPipe) id: number, @Body() updatePagoDto: UpdatePagoDto) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updatePagoDto: UpdatePagoDto,
+  ) {
     return this.pagosService.update(id, updatePagoDto);
   }
 

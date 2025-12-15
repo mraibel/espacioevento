@@ -55,4 +55,20 @@ export class InscripcionesService {
     const inscripcion = await this.findOne(id);
     await this.inscripcionRepository.remove(inscripcion);
   }
+
+  async findByUsuario(idUsuario: number): Promise<Inscripcione[]> {
+    return await this.inscripcionRepository.find({
+      where: { id_usuario: idUsuario },
+      relations: ['evento'],
+      order: { fecha_inscripcion: 'DESC' },
+    });
+  }
+
+  async findByEvento(idEvento: number): Promise<Inscripcione[]> {
+    return await this.inscripcionRepository.find({
+      where: { id_evento: idEvento },
+      relations: ['usuario'],
+      order: { fecha_inscripcion: 'DESC' },
+    });
+  }
 }

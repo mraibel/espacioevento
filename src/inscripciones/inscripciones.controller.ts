@@ -18,7 +18,7 @@ import { ValidRoles } from '../auth/interfaces';
 
 @Controller('inscripciones')
 export class InscripcionesController {
-  constructor(private readonly inscripcionesService: InscripcionesService) { }
+  constructor(private readonly inscripcionesService: InscripcionesService) {}
 
   @Get()
   @HttpCode(HttpStatus.OK)
@@ -32,6 +32,20 @@ export class InscripcionesController {
   @Auth()
   getOne(@Param('id') id: string) {
     return this.inscripcionesService.findOne(+id);
+  }
+
+  @Get('usuario/:id')
+  @HttpCode(HttpStatus.OK)
+  @Auth()
+  getByUsuario(@Param('id') id: string) {
+    return this.inscripcionesService.findByUsuario(+id);
+  }
+
+  @Get('evento/:id')
+  @HttpCode(HttpStatus.OK)
+  @Auth()
+  getByEvento(@Param('id') id: string) {
+    return this.inscripcionesService.findByEvento(+id);
   }
 
   @Post()
@@ -57,7 +71,7 @@ export class InscripcionesController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @Auth(ValidRoles.admin)
+  @Auth()
   remove(@Param('id') id: string) {
     return this.inscripcionesService.remove(+id);
   }
