@@ -47,6 +47,16 @@ npm run start:dev
 GET http://localhost:3000/api/seed
 ```
 
+## Usuarios de Prueba
+
+Después de ejecutar el seed (`GET /api/seed`):
+
+| Email                   | Password | Rol           |
+| ----------------------- | -------- | ------------- |
+| admin@example.com       | 123456   | Administrador |
+| organizador@example.com | 123456   | Organizador   |
+| asistente@example.com   | 123456   | asistente     |
+
 ## Endpoints de la API
 
 ### Autenticación
@@ -482,20 +492,3 @@ JWT_SECRET=tu_secreto_jwt
 
 MERCADOPAGO_ACCESS_TOKEN=TEST-6202514999315089-121421-...
 ```
-
-## Usuarios de Prueba
-
-Después de ejecutar el seed (`GET /api/seed`):
-
-| Email              | Password | Rol           |
-| ------------------ | -------- | ------------- |
-| juan@example.com   | 123456   | Administrador |
-| ana@example.com    | 123456   | Organizador   |
-| carlos@example.com | 123456   | Organizador   |
-| maria@example.com  | 123456   | Asistente     |
-| pedro@example.com  | 123456   | Asistente     |
-| laura@example.com  | 123456   | Asistente     |
-
-## Licencia
-
-[MIT licensed](LICENSE).
