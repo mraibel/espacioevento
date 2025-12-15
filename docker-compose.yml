@@ -24,9 +24,9 @@ services:
       target: builder
     container_name: espacioevento-app
     ports:
-      - "3000:3000"
+      - "4000:4000"
     environment:
-      - PORT=3000
+      - PORT=4000
       - DB_HOST=db
       - DB_PORT=5432
       - DB_USERNAME=postgres
